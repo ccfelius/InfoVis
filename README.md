@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 ### MacOS (Big Sur)
 
-Navigate to the folder your home.html is in (e.g. Website) and type in terminal
+In your terminal, navigate to the folder your home.html is in (e.g. Website) and type 
 
 ```
 python3 -m http.server
