@@ -6,6 +6,15 @@ https://snap.stanford.edu/data/soc-RedditHyperlinks.html
 
 https://www.overleaf.com/1266934357tgzqhshbmjjh
 
+### Requirements
+Note: creating a new virtual environment is recommended.
+
+To install the requirements for this visualization, go into your terminal and run
+
+```
+pip install -r requirements.txt 
+```
+
 ### MacOS (Big Sur)
 
 Navigate to the folder your home.html is in (e.g. Website) and type in terminal
