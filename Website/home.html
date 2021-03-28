@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>Reddit Network</title>
-  <link rel = "icon" href = "imgs/network.png" type = "image/x-icon"> 
+  <link rel = "icon" href = "images/network.png" type = "image/x-icon"> 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
@@ -107,13 +107,10 @@
               .enter()
               .append("text")
               .text(d => d.name);
-              
-              // .text(function(d) {return d.name;})
-              // .attr('dx', 6)
-              // .attr('dy', 3);
 
         node.append("title")
             .text(function(d) { return d.name; });
+
 
             // .on('mouseover', function (d, i) {
             //      d3.select(this).transition()
