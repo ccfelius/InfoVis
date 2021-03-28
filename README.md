@@ -6,7 +6,7 @@ https://snap.stanford.edu/data/soc-RedditHyperlinks.html
 
 https://www.overleaf.com/1266934357tgzqhshbmjjh
 
-### MacOS
+### MacOS (Big Sur)
 
 Navigate to the folder your home.html is in (e.g. Website) and type in terminal
 
