@@ -2,7 +2,8 @@
 
 https://snap.stanford.edu/data/soc-RedditHyperlinks.html
 
-EDIT PAPER:
+### Link to edit the paper
+
 https://www.overleaf.com/1266934357tgzqhshbmjjh
 
 ### MacOS
