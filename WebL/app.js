@@ -87,15 +87,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
               return result + 0.2
             })
             .attr("fill", "white")
-            // .each(function() {
-            //     var sel = d3.select(this);
-            //     var state = false;
-            //     sel.on('dblclick', function() {
-            //       state = !state;
-            //       if (state) {
-            //         sel.style('fill', 'black');
-            //       } else {
-            //         sel.style('fill', "white")
             .attr('r', function(d) {
               return d.value / 200 +2
             })
@@ -103,14 +94,47 @@ document.addEventListener('DOMContentLoaded', function(e) {
             .on("mouseover", function(d)
             {
                 d3.select(this)
-                     .style("opacity", 0.3)
+                    .style("opacity", 0.3)
+                    .style("width", function(d) { return x(d) + "px"; })
+                    .text(function(d) { return d.name; })
+                    .on("mouseover", function(d){tooltip.text(d.name); return tooltip.style("visibility", "visible");})
+                    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+                    .on("mouseout", function(){return tooltip.style("visibility", "hidden").style("opacity", "1");});
+
             })
 
             .on("mouseout", function(d)
              {
                  d3.select(this)
-                     .style("opacity", 1);
-             });
+                     .style("opacity", 1)
+             })
+
+            .on("click", function(d) {
+                // Select the circle being moused over
+                d3.select(this)
+                    .attr("fill", "white")
+                    .style("opacity", "0.86");
+
+                    // .append("g")
+
+
+
+              });
+
+        var tooltip = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .style("background", "#FFFFFF")
+            .style("opacity", "0.8")
+            .text("a simple tooltip");
+
+        var x = d3.scaleLinear()
+            .domain([0, d3.max(data)])
+            .range([0, 420]);
+
+
 
 
         var label = svg.append("g")
