@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>Reddit Network</title>
-  <link rel = "icon" href = "imgs/network.png" type = "image/x-icon"> 
+  <link rel = "icon" href = "images/network.png" type = "image/x-icon"> 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
@@ -42,17 +42,6 @@
             .attr("height", "100%")
             .attr("fill", "#4e5965")
 
-        // svg.append("text").text('REDDIT')
-        //   .attr("x", (175))
-        //   .attr("y",(85))
-        //   .attr("opacity", 0.7)
-        //   .attr("font-family", "Titillium Web")
-        //   .attr("letter-spacing", "0.5em")
-        //   .attr("font-style", "normal")
-        //   .attr("text-anchor", "middle")
-        //   .style("font-size", "40px")
-        //   .style("fill", "white")
-
         var simulation = d3.forceSimulation()
   				.nodes(data.nodes);
           
@@ -71,15 +60,26 @@
         function returnNodeValues(data) {
           var array = [];
           for (var i = 0; i < data.nodes.length; i++) {
-            // console.log(data.nodes[i].value)
-            // console.log(data.nodes[i].value)
             array.push(data.nodes[i].value);
-          // console.log(array)
           }
           return array;
         }
+        
+        var link = svg.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(data.links)
+            .enter().append("line")
+            .attr('stroke-width', function(d) {
+              return d.value / 100;
+            })
 
-        //draw circles for the nodes
+        var link_force =  d3.forceLink(data.links)
+            .id(function(d) { return d.name; })
+            .distance(200)
+        
+        var drag = d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+
         var node = svg.append("g")
           .attr("class", "nodes")
           .selectAll("circle")
@@ -94,36 +94,23 @@
             .attr('r', function(d) {
               return d.value / 200 +2;
             })
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout)
+          .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
-        var label = svg.append("g")
-          .attr("class", "labels")
-          .attr("font-family", "Titillium Web")
+        var texts = svg.append("g")
+              .selectAll('text')
+              .data(data.nodes)
+              .enter()
+              .append("text")
+              .text(d => d.name);
 
-          .attr("fill", "white")
-          .attr("font-size", "15px")
+        node.append("title")
+            .text(function(d) { return d.name; });
 
-          .selectAll("text")
-          .data(data.nodes)
-          .enter().append("text")
-            .attr("dy", function(d) {
-              return -(d.value / 200 +9)
-            })
-            .attr("text-anchor", "middle")
-            .attr("letter-spacing", "0.25em")
-            .attr("opacity", "0")
-            .attr("class", "label")
-            .text("TEST");
-
-        console.log(node);
-          // d3.select('.nodes').append("text")
-          //   .attr('text-anchor', 'middle')
-          //   .attr("dx", 12)
-          //   .attr("dy", ".35em")
-          //   // .attr('alignment-baseline', 'middle')
-          //   .style('font-size', "10px")
-          //   .attr('fill-opacity', 1)
-          //   .attr('fill', 'white')
-          //   .text("test")
 
             // .on('mouseover', function (d, i) {
             //      d3.select(this).transition()
@@ -136,38 +123,18 @@
             //     .attr('opacity', '1');
             // })
 
-        // var texts = d3.select('.nodes').append("text")
-        //   .attr('text-anchor', 'middle')
-        //   .attr("x", (175))
-        //   .attr("y",(85))
-        //   .attr('alignment-baseline', 'middle')
-        //   .style('font-size', "10px")
-        //   .attr('fill-opacity', 1)
-        //   .attr('fill', 'white')
-        //   .text("test")
-
-        simulation.on("tick", tickActions );
-
-        var link_force =  d3.forceLink(data.links)
-          .id(function(d) { return d.name; })
-          .distance(200)
-
+        simulation
+          .nodes(data.nodes)
+          .on("tick", tickActions );
         simulation.force("links",link_force)
-
-        var link = svg.append("g")
-            .attr("class", "links")
-            .selectAll("line")
-            .data(data.links)
-            .enter().append("line")
-            .attr('stroke-width', function(d) {
-              return d.value / 100;
-            })
-
 
 
         function tickActions() {
             //update circle positions each tick of the simulation
-            console.log(width)
+            // console.log(width)
+            texts.attr("x", d => d.x);
+            texts.attr("y", d => d.y);
+
             node
                 .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
                 .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
@@ -176,11 +143,40 @@
                 .attr("y1", function(d) { return d.source.y; })
                 .attr("x2", function(d) { return d.target.x; })
                 .attr("y2", function(d) { return d.target.y; });
-            label
-              .attr("x", function(d) { return d.x; })
-              .attr("y", function (d) { return d.y; })
+
               // .style("font-size", "10px").style("fill", "#333");
         }
+
+        function dragstarted(d) {
+          if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        }
+
+        function dragged(d) {
+          d.fx = d3.event.x;
+          d.fy = d3.event.y;
+        }
+
+        function dragended(d) {
+          if (!d3.event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+
+        function mouseover() {
+          d3.select(this).select("circle").transition()
+              .duration(750)
+              .attr("r", 15);
+        }
+
+        function mouseout() {
+          d3.select(this).select("circle").transition()
+              .duration(750)
+              .attr("r", 5);
+        }
+
+
     })
     </script>
 </body>
