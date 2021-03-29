@@ -39,6 +39,14 @@ body{
   color: black;
 } */
 
+#dropdown_container {
+  width: 50%;
+}
+
+.selection {
+  width: 50%;
+}
+
 /* Main content */
 .main {
   margin-top: 30px; /* Add a top margin to avoid content overlay */

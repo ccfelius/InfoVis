@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(e) {     
-	d3.json("data/batch1.json", function (data) {
+	d3.json("data/batch2.json", function (data) {
         var height = window.innerHeight,
             width = window.innerWidth,
             radius = 5;
@@ -43,10 +43,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
                 // .on("tickActions", tickActions)
           );
 
-        const drag = d3
-            .drag()
-            .on("start", dragstart)
-            .on("drag", dragged);
+        var drag = d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
 
         var maxNodeValue = d3.max(returnNodeValues(data));
         var minNodeValue = d3.min(returnNodeValues(data));
@@ -102,7 +99,18 @@ document.addEventListener('DOMContentLoaded', function(e) {
             .attr('r', function(d) {
               return d.value / 200 +2
             })
-            .call(drag).on("click", click);
+            .call(drag).on("click", click)
+            .on("mouseover", function(d)
+            {
+                d3.select(this)
+                     .style("opacity", 0.3)
+            })
+
+            .on("mouseout", function(d)
+             {
+                 d3.select(this)
+                     .style("opacity", 1);
+             });
 
 
         var label = svg.append("g")
@@ -148,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
             })
 
 
-
+        // Heatmap to sentiment analysis
         function heatMapColorforValue(value){
           var h = (1.0 - value) * 240
           return "hsl(" + h + ", 100%, 50%)";
@@ -193,18 +201,21 @@ document.addEventListener('DOMContentLoaded', function(e) {
             simulation.alpha(1).restart();
         }
 
-        function dragstart() {
-            d3.select(this).classed("fixed", true);
+       function dragstarted(d) {
+          if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
         }
 
-        function clamp(num, min, max) {
-            return num <= min ? min : num >= max ? max : num;
+        function dragged(d) {
+          d.fx = d3.event.x;
+          d.fy = d3.event.y;
         }
 
-        function dragged(event, d) {
-            d.fx = clamp(event.x, 0, width);
-            d.fy = clamp(event.y, 0, height);
-            simulation.alpha(1).restart();
+        function dragended(d) {
+          if (!d3.event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
         }
 
     })
