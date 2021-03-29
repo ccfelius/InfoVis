@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
         var maxNodeValue = d3.max(returnNodeValues(data));
         var minNodeValue = d3.min(returnNodeValues(data));
+        var maxLinkValue = d3.max(returnLinkValues(data));
+        var minLinkValue = d3.min(returnLinkValues(data));
 
         function returnNodeValues(data) {
           var array = [];
@@ -61,6 +63,19 @@ document.addEventListener('DOMContentLoaded', function(e) {
           }
           return array;
         }
+
+        function returnLinkValues(data) {
+          var array = [];
+          for (var i = 0; i < data.links.length; i++) {
+            // console.log(data.nodes[i].value)
+            // console.log(data.nodes[i].value)
+            array.push(data.links[i].value);
+          // console.log(array)
+          }
+          return array;
+        }
+
+        // Min and max link values
 
 
         //draw circles for the nodes
@@ -75,6 +90,15 @@ document.addEventListener('DOMContentLoaded', function(e) {
               return result + 0.2
             })
             .attr("fill", "white")
+            // .each(function() {
+            //     var sel = d3.select(this);
+            //     var state = false;
+            //     sel.on('dblclick', function() {
+            //       state = !state;
+            //       if (state) {
+            //         sel.style('fill', 'black');
+            //       } else {
+            //         sel.style('fill', "white")
             .attr('r', function(d) {
               return d.value / 200 +2
             })
@@ -115,11 +139,20 @@ document.addEventListener('DOMContentLoaded', function(e) {
             .selectAll("line")
             .data(data.links)
             .enter().append("line")
-            .attr('stroke-width', function(d) {
-              return d.value / 100;
+            .attr("opacity", function(d) {
+              result = (d.value/minLinkValue) / (maxLinkValue / minLinkValue)
+              return result + 0.2
+            })
+            .style('stroke-width', function(d) {
+              return 1.3;
             })
 
 
+
+        function heatMapColorforValue(value){
+          var h = (1.0 - value) * 240
+          return "hsl(" + h + ", 100%, 50%)";
+        }
 
         function tickActions() {
             //update circle positions each tick of the simulation
