@@ -5,9 +5,9 @@ import json
 
 # INPUT PARAMETERS
 # Name of output file
-outputname = "batch1"
+outputname = "batch2"
 # Amount of related topics
-related = 8
+related = 20
 
 with open("soc-redditHyperlinks-body.tsv") as f:
     reddit = pd.read_csv(f, sep='\t')
@@ -31,12 +31,17 @@ for i, node in enumerate(all_nodes):
 
 # loop through the set of subreddits
 for sr in all_nodes:
+    subset = reddit[reddit['SOURCE_SUBREDDIT'] == sr]
     for target_ in drama_target:
         if sr == target_:
             continue
-        sentiment = drama[drama['TARGET_SUBREDDIT'] == target_]["LINK_SENTIMENT"].sum()
+        subset_t = subset[subset['TARGET_SUBREDDIT'] == target_]
+        if len(subset_t) == 0:
+            # print(f"{sr} has no links to {target_}")
+            continue
+        sentiment = subset_t["LINK_SENTIMENT"].sum()
         graph['links'].append({"source": names[sr], "target": int(names[target_]), "value": int(sentiment)})
 
-with open(f'website/data/{outputname}.json', 'w') as outfile:
+with open(f'WebL/data/{outputname}.json', 'w') as outfile:
     json.dump(graph, outfile)
 
