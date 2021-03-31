@@ -10,7 +10,7 @@
     <option style="color:gray" value="" disabled selected>Choose subreddit 1</option>
     <option>Advice</option>
     <option>Animals</option>
-    <option>Art></option>
+    <option>Art</option>
     <option>DIY</option>
     <option>Electronics</option>
     <option>Entertainment</option>
@@ -39,7 +39,7 @@
     <option style="color:gray" value="" disabled selected>Choose subreddit 2</option>
     <option>Advice</option>
     <option>Animals</option>
-    <option>Art></option>
+    <option>Art</option>
     <option>DIY</option>
     <option>Electronics</option>
     <option>Entertainment</option>
@@ -85,30 +85,20 @@
       }))
       .append("g")
 
-    var allCategories;  
 
-    d3.csv("categories.csv", function(data) {
-
-      allCategories = d3.map(data, function(d){return(d)})
-
-      d3.select("#selectButton")
-         .selectAll('Communities')
-         .data(allCategories)
-         .enter()
-         .append('community')
-         .text(function (d) { return d; })
-         .attr("value", function (d) {return d; }) 
-
-    })
-
-
-
+      var selectedGroup = "advice"
+      var selectedGroup2 = "animals"
+      updateChart(selectedGroup, selectedGroup2)
 
       d3.select("#selectButton").on("change", function(d){
         selectedGroup = this.value
-        updateChart(selectedGroup)
+        updateChart(selectedGroup, selectedGroup2)
       })
 
+      d3.select("#selectButton2").on("change", function(d){
+        selectedGroup2 = this.value
+        updateChart(selectedGroup2, selectedGroup)
+      })
 
       svg.append("text").text('REDDIT')
         .attr("x", (175))
@@ -122,8 +112,15 @@
         .style("fill", "white")
 
 
-      function updateChart(selection) {
-        var selected_category = selection
+      function updateChart(selection1, selection2) {
+
+        selected_category = selection1.concat(selection2)
+
+        if (selection1 == selection2) {
+          selected_category = selection1
+        }
+
+        // var selected_category = selection
 
         // var myobj = document.getElementsByClassName("nodes")
         // myobj.remove()
@@ -135,7 +132,7 @@
         label_remove.remove()
 
 
-        d3.json(`${selected_category}.json`, function (data) {
+        d3.json(`files/${selected_category}.json`, function (data) {
 
 
           // svg.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "black");
@@ -147,10 +144,10 @@
 
           simulation
             .force("charge_force", d3.forceManyBody()
-              .strength(-50))
+              .strength(-300))
             .force("center_force", d3.forceCenter(width / 2, height / 2))
         		.force('collide', d3.forceCollide()
-              .radius(20)
+              .radius(50)
               .iterations(1)
             )
 
@@ -219,8 +216,31 @@
                 return result + 0.2
               })
               .attr("fill", "white")
-              .attr('r', function(d) {
-                return d.value / 200 +2;
+              // .attr('r', function(d) {
+              //   return d.value / 200 +2;
+              // })
+              .attr("r", function(d) {
+
+                if (minNodeValue == 0) {
+                  minNodeValue = 0.001
+                }
+                result = (d.value/minNodeValue) / (maxNodeValue / minNodeValue)
+                result = (result * 15) + 5
+                console.log(result)
+                return result
+                // if (result *100 > 10) {
+                //   return 20
+                // }
+                // return result * 100
+                // console.log(result * 100)
+                //
+                // if (result * 10 > 50) {
+                //   return 35
+                // }
+                // if (result < 1) {
+                //   return 10
+                // }
+                // return result * 100
               })
               .call(drag).on("click", click)
               .on("mouseover", function(d)
@@ -237,7 +257,7 @@
 
           var link_force =  d3.forceLink(data.links)
             .id(function(d) { return d.name; })
-            .distance(200)
+            .distance(500)
 
           simulation.force("links",link_force)
 
@@ -253,23 +273,23 @@
               .style("stroke", function(d) {
                 if (d.sentiment == 10) {
                   return "#ff0000"
-                } else if (d.sentiment == 9) {
+                } else if (d.sentiment == 1) {
                   return "#eb3900"
-                } else if (d.sentiment == 8) {
+                } else if (d.sentiment == 2) {
                   return "#d64f00"
-                } else if (d.sentiment == 7) {
+                } else if (d.sentiment == 3) {
                   return "#c15d00"
-                } else if (d.sentiment == 6) {
+                } else if (d.sentiment == 4) {
                   return "#ac6700"
                 } else if (d.sentiment == 5) {
                   return "#956f00"
-                } else if (d.sentiment == 4) {
+                } else if (d.sentiment == 6) {
                   return "#7e7500"
-                } else if (d.sentiment == 3) {
+                } else if (d.sentiment == 7) {
                   return "#647a00"
-                } else if (d.sentiment == 2) {
+                } else if (d.sentiment == 8) {
                   return "#457d00"
-                } else if (d.sentiment == 1) {
+                } else if (d.sentiment == 9) {
                   return "#008000"
                 } else {
                   return "#008000"

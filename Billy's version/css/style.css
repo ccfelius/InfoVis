@@ -13,7 +13,7 @@ body {
 }
 
 #selectButton {
-  left:100px;
+  left:1300px;
   top: 100px;
   position: relative;
   display: inline-block;
@@ -23,7 +23,7 @@ body {
 }
 
 #selectButton2 {
-  left:120px;
+  left:1325px;
   top: 100px;
   position: relative;
   display: inline-block;
