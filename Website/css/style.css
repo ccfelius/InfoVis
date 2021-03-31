@@ -46,3 +46,17 @@ body{
 .main {
   margin-top: 30px; /* Add a top margin to avoid content overlay */
 }
+
+select {
+    font-size: .9rem;
+    padding: 2px 5px;
+    height: 20px; 
+    width: 10%;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  left: 500px;
+  top: 15px;
+}
