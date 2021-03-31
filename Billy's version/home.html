@@ -7,8 +7,62 @@
 </head>
 <body id="graph">
   <select id="selectButton">
-  <option>data</option>
-  <option>data2</option>
+    <option style="color:gray" value="" disabled selected>Choose subreddit 1</option>
+    <option>Advice</option>
+    <option>Animals</option>
+    <option>Art></option>
+    <option>DIY</option>
+    <option>Electronics</option>
+    <option>Entertainment</option>
+    <option>Fashion</option>
+    <option>Food</option>
+    <option>Funny</option>
+    <option>Gaming</option>
+    <option>Health</option>
+    <option>Memes</option>
+    <option>Music</option>
+    <option>News</option>
+    <option>Outdoors</option>
+    <option>Photography</option>
+    <option>Pics_and_Gifs</option>
+    <option>Relationships</option>
+    <option>Science</option>
+    <option>Sports</option>
+    <option>TV</option>
+    <option>Tech</option>
+    <option>Travel</option>
+    <option>Video_Games</option>
+    <option>Videos</option>
+    <option>Writing</option>
+</select>
+  <select id="selectButton2">
+    <option style="color:gray" value="" disabled selected>Choose subreddit 2</option>
+    <option>Advice</option>
+    <option>Animals</option>
+    <option>Art></option>
+    <option>DIY</option>
+    <option>Electronics</option>
+    <option>Entertainment</option>
+    <option>Fashion</option>
+    <option>Food</option>
+    <option>Funny</option>
+    <option>Gaming</option>
+    <option>Health</option>
+    <option>Memes</option>
+    <option>Music</option>
+    <option>News</option>
+    <option>Outdoors</option>
+    <option>Photography</option>
+    <option>Pics_and_Gifs</option>
+    <option>Relationships</option>
+    <option>Science</option>
+    <option>Sports</option>
+    <option>TV</option>
+    <option>Tech</option>
+    <option>Travel</option>
+    <option>Video_Games</option>
+    <option>Videos</option>
+    <option>Writing</option>
 </select>
 
   <div id="network"></div>
@@ -31,12 +85,30 @@
       }))
       .append("g")
 
+    var allCategories;  
+
+    d3.csv("categories.csv", function(data) {
+
+      allCategories = d3.map(data, function(d){return(d)})
+
+      d3.select("#selectButton")
+         .selectAll('Communities')
+         .data(allCategories)
+         .enter()
+         .append('community')
+         .text(function (d) { return d; })
+         .attr("value", function (d) {return d; }) 
+
+    })
+
+
+
+
       d3.select("#selectButton").on("change", function(d){
         selectedGroup = this.value
         updateChart(selectedGroup)
       })
-      // updat
-      // eChart("data")
+
 
       svg.append("text").text('REDDIT')
         .attr("x", (175))

@@ -17,4 +17,17 @@ body {
   top: 100px;
   position: relative;
   display: inline-block;
+  background: #000000;
+  *font-weight: bold;
+  color: white;
+}
+
+#selectButton2 {
+  left:120px;
+  top: 100px;
+  position: relative;
+  display: inline-block;
+  *font-weight: bold;
+  color: white;
+  background: #000000;
 }
