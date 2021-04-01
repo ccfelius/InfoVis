@@ -10,7 +10,12 @@ To install the requirements for this visualization, go into your terminal and ru
 
 ```
 pip install -r requirements.txt 
+
 ```
+
+#### Instructions
+
+TBD
 
 ### MacOS (Big Sur)
 
