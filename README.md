@@ -19,7 +19,7 @@ pip install -r requirements.txt
 After you cloned this git, in your terminal navigate to Billy's version folder by
 
 ```
-cd 'Billy's version'
+cd "Billy's version"
 ```
 
 And subsequently type
