@@ -13,9 +13,6 @@ pip install -r requirements.txt
 
 ```
 
-#### Instructions
-
-TBD
 
 ### MacOS (Big Sur)
 
