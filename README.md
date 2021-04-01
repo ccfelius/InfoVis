@@ -2,9 +2,6 @@
 
 https://snap.stanford.edu/data/soc-RedditHyperlinks.html
 
-### Link to edit the paper
-
-https://www.overleaf.com/1266934357tgzqhshbmjjh
 
 ### Requirements
 Note: creating a new virtual environment is recommended.
