@@ -19,10 +19,16 @@ TBD
 
 ### MacOS (Big Sur)
 
-In your terminal, navigate to the folder your home.html is in (e.g. Website) and type 
+After you cloned this git, in your terminal navigate to Billy's version folder by
+
+```
+cd 'Billy's version'
+```
+
+And subsequently type
 
 ```
 python3 -m http.server
 ```
 
-Subsequently, in your browser go to http://localhost:8000/home.html for the visualization. This enables to run a local webserver on your machine.
+Lastly, in your browser go to http://localhost:8000/home.html for the visualization. This enables to run a local webserver on your machine.
