@@ -1,4 +1,4 @@
-# Information Visualization
+# Information Visualization: Team number 5
 
 https://snap.stanford.edu/data/soc-RedditHyperlinks.html
 
